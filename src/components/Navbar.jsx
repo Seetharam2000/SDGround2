@@ -1,31 +1,70 @@
-import { Link, useLocation } from "react-router-dom";
+// src/components/Navbar.jsx
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { auth } from "../firebase/config";
+import { signOut } from "firebase/auth";
+import { useAuthState } from "react-firebase-hooks/auth";
+import toast from "react-hot-toast";
+
+// Install: npm install react-firebase-hooks
+// If not installed yet: npm install react-firebase-hooks
 
 export default function Navbar() {
   const loc = useLocation();
+  const navigate = useNavigate();
+  const [user] = useAuthState(auth);
+
+  const handleLogout = async () => {
+    await signOut(auth);
+    toast.success("Signed out");
+    navigate("/");
+  };
+
   const links = [
     { to: "/", label: "Map" },
     { to: "/report", label: "Report Issue" },
     { to: "/dashboard", label: "Authority" },
-    { to: "/login", label: "Login" },
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-[2000] bg-gray-900 border-b border-gray-800 px-4 py-3 flex items-center justify-between">
-      <span className="font-black text-white text-lg">SDGround</span>
-      <div className="flex gap-2">
+    <nav className="fixed top-0 left-0 right-0 z-[2000] bg-gray-900 border-b border-gray-800 px-5 h-14 flex items-center justify-between">
+      <Link to="/" className="font-black text-white text-lg tracking-tight">
+        SDGround
+      </Link>
+
+      <div className="flex items-center gap-1">
         {links.map((l) => (
           <Link
             key={l.to}
             to={l.to}
-            className={`text-sm font-medium px-3 py-1 rounded-lg transition-all ${
+            className={`text-sm font-medium px-3 py-1.5 rounded-lg transition-colors ${
               loc.pathname === l.to
-                ? "bg-blue-600 text-white"
-                : "text-gray-400 hover:text-white"
+                ? "bg-indigo-600 text-white"
+                : "text-gray-400 hover:text-white hover:bg-gray-800"
             }`}
           >
             {l.label}
           </Link>
         ))}
+
+        {user ? (
+          <button
+            onClick={handleLogout}
+            className="ml-2 text-sm font-medium px-3 py-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-colors"
+          >
+            Logout
+          </button>
+        ) : (
+          <Link
+            to="/login"
+            className={`ml-2 text-sm font-medium px-3 py-1.5 rounded-lg transition-colors ${
+              loc.pathname === "/login"
+                ? "bg-indigo-600 text-white"
+                : "text-gray-400 hover:text-white hover:bg-gray-800"
+            }`}
+          >
+            Login
+          </Link>
+        )}
       </div>
     </nav>
   );
