@@ -7,13 +7,6 @@ import { WARDS } from "../data/wards";
 import toast from "react-hot-toast";
 
 const CATEGORIES = ["water", "garbage", "air", "roads", "health"];
-const CATEGORY_ICONS = {
-  water: "💧",
-  garbage: "🗑️",
-  air: "💨",
-  roads: "🛣️",
-  health: "🏥",
-};
 
 export default function ComplaintForm() {
   const [wardId, setWardId] = useState(WARDS[0].id);
@@ -36,7 +29,6 @@ export default function ComplaintForm() {
     setImagePreview(URL.createObjectURL(file));
   };
 
-  // Upload image to Firebase Storage and return download URL
   const uploadImage = (file) => {
     return new Promise((resolve, reject) => {
       const fileName = `complaints/${Date.now()}_${file.name}`;
@@ -69,13 +61,10 @@ export default function ComplaintForm() {
     setUploading(true);
     try {
       let imageUrl = null;
-
-      // Upload image if one was selected
       if (image) {
         imageUrl = await uploadImage(image);
       }
 
-      // Save complaint to Firestore
       await addDoc(collection(db, "complaints"), {
         wardId,
         category,
@@ -98,11 +87,17 @@ export default function ComplaintForm() {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-gray-950 flex items-center justify-center px-4">
+      <div className="min-h-screen bg-black flex items-center justify-center px-8">
         <div className="text-center">
-          <div className="text-5xl mb-4">✅</div>
-          <h2 className="text-2xl font-black text-white mb-2">Complaint Submitted</h2>
-          <p className="text-gray-400 mb-6">The ward map has been updated in real time.</p>
+          <p className="text-xs tracking-[0.3em] uppercase text-gray-500 mb-6">
+            Submitted
+          </p>
+          <h2 className="text-[clamp(2rem,6vw,4rem)] font-black uppercase tracking-tighter leading-none text-white mb-4">
+            Complaint<br />Received
+          </h2>
+          <p className="text-gray-500 text-sm mb-12 max-w-xs mx-auto">
+            The ward map has been updated in real time.
+          </p>
           <button
             onClick={() => {
               setSubmitted(false);
@@ -110,7 +105,7 @@ export default function ComplaintForm() {
               setImage(null);
               setImagePreview(null);
             }}
-            className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl font-bold transition-colors"
+            className="px-8 py-4 bg-white text-black text-xs font-bold tracking-[0.2em] uppercase hover:bg-gray-200 transition-colors"
           >
             Submit Another
           </button>
@@ -120,109 +115,130 @@ export default function ComplaintForm() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-950 pt-14 flex items-start justify-center px-4 py-8">
-      <div className="bg-gray-900 border border-gray-800 rounded-2xl p-7 w-full max-w-lg">
-        <h1 className="text-2xl font-black text-white mb-1">Report an Issue</h1>
-        <p className="text-gray-400 text-sm mb-6">Your complaint updates the ward map live.</p>
+    <div className="min-h-screen bg-black text-white pt-14">
+      <div className="max-w-2xl mx-auto px-8 py-16">
+
+        {/* Header */}
+        <p className="text-xs tracking-[0.3em] uppercase text-gray-500 mb-4">
+          Civic Reporting
+        </p>
+        <h1 className="text-[clamp(2rem,5vw,3.5rem)] font-black uppercase tracking-tighter leading-none mb-3">
+          Report an<br />Issue
+        </h1>
+        <p className="text-gray-500 text-sm mb-12">
+          Your complaint updates the ward map live.
+        </p>
+
+        <div className="border-t border-gray-800 mb-12" />
 
         {/* Ward selector */}
-        <label className="block text-xs text-gray-400 uppercase tracking-widest mb-1">
-          Ward
-        </label>
-        <select
-          value={wardId}
-          onChange={(e) => setWardId(e.target.value)}
-          className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 mb-4 text-sm"
-        >
-          {WARDS.map((w) => (
-            <option key={w.id} value={w.id}>
-              {w.name}
-            </option>
-          ))}
-        </select>
+        <div className="mb-10">
+          <label className="block text-xs tracking-[0.25em] uppercase text-gray-500 mb-3">
+            Ward
+          </label>
+          <select
+            value={wardId}
+            onChange={(e) => setWardId(e.target.value)}
+            className="w-full bg-transparent border border-gray-800 px-4 py-4 text-white text-sm focus:outline-none focus:border-gray-400 transition-colors appearance-none cursor-pointer"
+          >
+            {WARDS.map((w) => (
+              <option key={w.id} value={w.id} className="bg-black">
+                {w.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
         {/* Category picker */}
-        <label className="block text-xs text-gray-400 uppercase tracking-widest mb-2">
-          Category
-        </label>
-        <div className="grid grid-cols-5 gap-2 mb-4">
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setCategory(cat)}
-              className={`flex flex-col items-center justify-center py-3 rounded-xl border text-xs font-medium transition-all ${
-                category === cat
-                  ? "bg-indigo-600 border-indigo-500 text-white"
-                  : "bg-gray-800 border-gray-700 text-gray-400 hover:border-gray-500"
-              }`}
-            >
-              <span className="text-xl mb-1">{CATEGORY_ICONS[cat]}</span>
-              {cat}
-            </button>
-          ))}
+        <div className="mb-10">
+          <label className="block text-xs tracking-[0.25em] uppercase text-gray-500 mb-3">
+            Category
+          </label>
+          <div className="grid grid-cols-5 gap-px bg-gray-800">
+            {CATEGORIES.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setCategory(cat)}
+                className={`py-4 text-xs font-bold tracking-[0.15em] uppercase transition-colors ${
+                  category === cat
+                    ? "bg-white text-black"
+                    : "bg-black text-gray-500 hover:text-white hover:bg-gray-950"
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Description */}
-        <label className="block text-xs text-gray-400 uppercase tracking-widest mb-1">
-          Description
-        </label>
-        <textarea
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          placeholder="Describe the issue clearly — location, severity, how long it's been there."
-          rows={4}
-          className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 resize-none mb-4 text-sm"
-        />
+        <div className="mb-10">
+          <label className="block text-xs tracking-[0.25em] uppercase text-gray-500 mb-3">
+            Description
+          </label>
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Describe the issue clearly — location, severity, how long it's been there."
+            rows={5}
+            className="w-full bg-transparent border border-gray-800 px-4 py-4 text-white placeholder-gray-700 focus:outline-none focus:border-gray-400 transition-colors resize-none text-sm leading-relaxed"
+          />
+        </div>
 
         {/* Image upload */}
-        <label className="block text-xs text-gray-400 uppercase tracking-widest mb-1">
-          Photo (optional)
-        </label>
-        <label className="block w-full bg-gray-800 border border-dashed border-gray-600 rounded-xl px-4 py-5 text-center cursor-pointer hover:border-indigo-500 transition-colors mb-4">
-          {imagePreview ? (
-            <img
-              src={imagePreview}
-              alt="Preview"
-              className="mx-auto max-h-36 rounded-lg object-cover"
+        <div className="mb-10">
+          <label className="block text-xs tracking-[0.25em] uppercase text-gray-500 mb-3">
+            Photo (optional)
+          </label>
+          <label className="block w-full border border-dashed border-gray-800 px-4 py-10 text-center cursor-pointer hover:border-gray-500 transition-colors">
+            {imagePreview ? (
+              <img
+                src={imagePreview}
+                alt="Preview"
+                className="mx-auto max-h-40 object-cover"
+              />
+            ) : (
+              <div>
+                <p className="text-xs tracking-[0.2em] uppercase text-gray-600">
+                  Click to upload
+                </p>
+                <p className="text-xs text-gray-700 mt-1">Max 5MB</p>
+              </div>
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImagePick}
+              className="hidden"
             />
-          ) : (
-            <div>
-              <div className="text-3xl mb-1">📷</div>
-              <p className="text-gray-400 text-sm">Click to upload (max 5MB)</p>
-            </div>
-          )}
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImagePick}
-            className="hidden"
-          />
-        </label>
+          </label>
+        </div>
 
         {/* Upload progress */}
         {uploading && uploadProgress > 0 && (
-          <div className="mb-4">
-            <div className="flex justify-between text-xs text-gray-400 mb-1">
-              <span>Uploading photo…</span>
+          <div className="mb-8">
+            <div className="flex justify-between text-xs tracking-[0.15em] uppercase text-gray-500 mb-2">
+              <span>Uploading photo</span>
               <span>{uploadProgress}%</span>
             </div>
-            <div className="h-1.5 bg-gray-700 rounded-full overflow-hidden">
+            <div className="h-px bg-gray-800 w-full">
               <div
-                className="h-full bg-indigo-500 rounded-full transition-all"
+                className="h-px bg-white transition-all"
                 style={{ width: `${uploadProgress}%` }}
               />
             </div>
           </div>
         )}
 
-        {/* Submit button */}
+        {/* Submit */}
         <button
           onClick={handleSubmit}
           disabled={uploading}
-          className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-700 text-white font-bold py-3.5 rounded-xl transition-colors text-sm"
+          className="w-full bg-white text-black text-xs font-bold tracking-[0.2em] uppercase py-4 hover:bg-gray-200 disabled:bg-gray-800 disabled:text-gray-600 transition-colors"
         >
           {uploading ? "Submitting…" : "Submit Complaint"}
         </button>
+
       </div>
     </div>
   );

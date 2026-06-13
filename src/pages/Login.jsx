@@ -13,7 +13,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [loginMode, setLoginMode] = useState(null); // null | 'user' | 'authority'
+  const [loginMode, setLoginMode] = useState(null);
   const navigate = useNavigate();
 
   const googleProvider = new GoogleAuthProvider();
@@ -83,7 +83,6 @@ export default function Login() {
     <div className="min-h-screen bg-gray-950 flex items-center justify-center p-4">
       <div className="w-full max-w-sm bg-gray-900 rounded-2xl p-6 text-white">
 
-        {/* Back button */}
         <button
           onClick={() => setLoginMode(null)}
           className="text-gray-400 text-sm mb-4 hover:text-white flex items-center gap-1"
@@ -108,6 +107,7 @@ export default function Login() {
           onChange={(e) => setPassword(e.target.value)}
           className="w-full bg-gray-800 rounded-lg px-4 py-3 mb-4 border border-gray-700 outline-none text-white"
         />
+
         <button
           onClick={login}
           disabled={loading}
@@ -115,6 +115,7 @@ export default function Login() {
         >
           {loading ? "Signing in..." : "Sign In"}
         </button>
+
         <button
           onClick={signup}
           disabled={loading}
@@ -145,4 +146,3 @@ export default function Login() {
     </div>
   );
 }
-

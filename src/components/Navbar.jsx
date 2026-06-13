@@ -1,5 +1,3 @@
-// src/components/Navbar.jsx
-
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { auth } from "../firebase/config";
 import { signOut } from "firebase/auth";
@@ -13,7 +11,6 @@ export default function Navbar() {
 
   if (!user) return null;
 
-  // Hide navbar on authority pages
   if (
     loc.pathname === "/authority-login" ||
     loc.pathname === "/authority"
@@ -35,22 +32,19 @@ export default function Navbar() {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-[2000] bg-gray-900 border-b border-gray-800 px-5 h-14 flex items-center justify-between">
-      <Link
-        to="/home"
-        className="font-black text-white text-lg tracking-tight"
-      >
+      <Link to="/home" className="font-black text-white text-lg tracking-tight">
         SDGround
       </Link>
 
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-6">
         {links.map((l) => (
           <Link
             key={l.to}
             to={l.to}
-            className={`text-sm font-medium px-3 py-1.5 rounded-lg transition-colors ${
+            className={`text-xs tracking-[0.2em] uppercase font-medium transition-colors ${
               loc.pathname === l.to
-                ? "bg-indigo-600 text-white"
-                : "text-gray-400 hover:text-white hover:bg-gray-800"
+                ? "text-white border-b border-white pb-0.5"
+                : "text-gray-500 hover:text-white"
             }`}
           >
             {l.label}
@@ -59,7 +53,7 @@ export default function Navbar() {
 
         <button
           onClick={handleLogout}
-          className="ml-2 text-sm font-medium px-3 py-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-colors"
+          className="text-xs tracking-[0.2em] uppercase font-medium text-gray-500 hover:text-white transition-colors ml-4 border-l border-gray-800 pl-6"
         >
           Logout
         </button>
