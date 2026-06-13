@@ -4,7 +4,7 @@ import { Toaster } from "react-hot-toast";
 import Navbar from "./components/Navbar";
 import Map from "./components/Map";
 import ComplaintForm from "./components/ComplaintForm";
-import AuthorityDashboard from "./components/AuthorityDashboard";
+import AuthorityDashboard from "./components/authorityDashboard";
 import Login from "./pages/Login";
 
 export default function App() {
