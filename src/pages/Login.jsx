@@ -13,6 +13,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [loginMode, setLoginMode] = useState(null); // null | 'user' | 'authority'
   const navigate = useNavigate();
 
   const googleProvider = new GoogleAuthProvider();
@@ -20,7 +21,7 @@ export default function Login() {
   const loginWithGoogle = async () => {
     try {
       await signInWithPopup(auth, googleProvider);
-      navigate("/report");
+      navigate("/home");
     } catch (e) {
       toast.error(e.message);
     }
@@ -39,30 +40,60 @@ export default function Login() {
   };
 
   const signup = async () => {
-  setLoading(true);
+    setLoading(true);
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      toast.success("Account created successfully");
+      navigate("/home");
+    } catch (e) {
+      toast.error(e.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  try {
-    await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password
+  // SCREEN 1: Role picker
+  if (loginMode === null) {
+    return (
+      <div className="min-h-screen bg-gray-950 flex items-center justify-center p-4">
+        <div className="w-full max-w-sm bg-gray-900 rounded-2xl p-6 text-white">
+          <h1 className="text-2xl font-black mb-1">SDGround</h1>
+          <p className="text-gray-400 text-sm mb-8">Sign in to continue</p>
+
+          <button
+            onClick={() => setLoginMode("user")}
+            className="w-full bg-blue-600 hover:bg-blue-700 font-bold py-4 rounded-xl mb-3 flex items-center justify-center gap-2 text-lg"
+          >
+            👤 Login as Citizen
+          </button>
+
+          <button
+            onClick={() => navigate("/authority-login")}
+            className="w-full bg-purple-700 hover:bg-purple-800 font-bold py-4 rounded-xl flex items-center justify-center gap-2 text-lg"
+          >
+            🏛️ Login as Authority
+          </button>
+        </div>
+      </div>
     );
-
-    toast.success("Account created successfully");
-
-    navigate("/home");
-  } catch (e) {
-    toast.error(e.message);
-  } finally {
-    setLoading(false);
   }
-};
 
+  // SCREEN 2: Citizen login form
   return (
     <div className="min-h-screen bg-gray-950 flex items-center justify-center p-4">
       <div className="w-full max-w-sm bg-gray-900 rounded-2xl p-6 text-white">
+
+        {/* Back button */}
+        <button
+          onClick={() => setLoginMode(null)}
+          className="text-gray-400 text-sm mb-4 hover:text-white flex items-center gap-1"
+        >
+          ← Back
+        </button>
+
         <h1 className="text-2xl font-black mb-1">SDGround</h1>
-        <p className="text-gray-400 text-sm mb-6">Sign in to continue</p>
+        <p className="text-gray-400 text-sm mb-6">Sign in as Citizen</p>
+
         <input
           type="email"
           placeholder="Email"
@@ -100,7 +131,7 @@ export default function Login() {
 
         <button
           onClick={loginWithGoogle}
-          className="w-full bg-white text-black font-bold py-3 rounded-xl mb-4 flex items-center justify-center gap-2 hover:bg-gray-100"
+          className="w-full bg-white text-black font-bold py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-gray-100"
         >
           <svg width="18" height="18" viewBox="0 0 48 48">
             <path fill="#FFC107" d="M43.6 20H24v8h11.3C33.6 33.1 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.5 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c11 0 19.7-8 19.7-20 0-1.3-.1-2.7-.1-4z"/>
@@ -110,11 +141,8 @@ export default function Login() {
           </svg>
           Continue with Google
         </button>
-
-        <div className="text-center text-xs text-gray-500">
-          Authority demo: officer@sdground.in / demo1234
-        </div>
       </div>
     </div>
   );
 }
+

@@ -27,12 +27,14 @@ export default function AuthorityDashboard() {
 
   // Redirect to login if not authenticated
   useEffect(() => {
-    if (!loadingAuth && !user) {
-      toast.error("Please sign in to access the Authority dashboard");
-      navigate("/login");
-    }
-  }, [user, loadingAuth, navigate]);
-
+  if (
+    !loadingAuth &&
+    (!user || user.email !== "authority@sdground.com")
+  ) {
+    toast.error("Authority access only");
+    navigate("/authority-login");
+  }
+}, [user, loadingAuth, navigate]);
   // Load complaints for selected ward in real time
   useEffect(() => {
     if (!selected) return;
@@ -94,12 +96,16 @@ export default function AuthorityDashboard() {
   const sorted = [...WARDS].sort((a, b) => a.sdgScore - b.sdgScore);
 
   if (loadingAuth) {
-    return (
-      <div className="min-h-screen bg-gray-950 flex items-center justify-center text-white">
-        Loading…
-      </div>
-    );
-  }
+  return (
+    <div className="min-h-screen bg-gray-950 flex items-center justify-center text-white">
+      Loading...
+    </div>
+  );
+}
+
+//if (!user || user.email !== "authority@sdground.com") {
+  //return null;
+//}
 
   return (
     <div className="min-h-screen bg-gray-950 text-white flex pt-14">
