@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Drishti — Groundwater Risk Engine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+
+  <!-- Landing -->
+  <div id="landing" class="screen screen--active">
+    <div class="split">
+      <section class="split__left">
+        <p class="label label--top">DRISHTI</p>
+        <div class="hero">
+          <p class="label">HYDERABAD · GROUNDWATER INTELLIGENCE</p>
+          <h1 class="display">GROUNDWATER<br />RISK ENGINE</h1>
+          <p class="body-text">
+            Monitor ward-level groundwater risk across Hyderabad and explore
+            monitoring data for all 36 Indian states and union territories.
+          </p>
+        </div>
+        <p class="label label--bottom" id="landing-dataset">INDIA · 4,320 STATIONS</p>
+      </section>
+
+      <div class="split__rule" aria-hidden="true"></div>
+
+      <section class="split__right">
+        <p class="label">WELCOME</p>
+        <h2 class="title">DRISHTI</h2>
+        <p class="subtitle">Select a module to continue</p>
+
+        <div class="module-list">
+          <article class="module">
+            <span class="module__num">01</span>
+            <h3 class="module__title">WARD MONITORING</h3>
+            <p class="module__desc">Hyderabad wards · Live risk scoring · Telugu alerts</p>
+            <button class="cta" data-enter="wards">CONTINUE →</button>
+          </article>
+
+          <div class="rule-h" aria-hidden="true"></div>
+
+          <article class="module">
+            <span class="module__num">02</span>
+            <h3 class="module__title">STATE EXPLORER</h3>
+            <p class="module__desc">All India · 120 stations per state · Depth analytics</p>
+            <button class="cta" data-enter="states">CONTINUE →</button>
+          </article>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Dashboard -->
+  <div id="dashboard" class="screen">
+    <div class="split split--dashboard">
+      <aside class="split__left panel">
+        <header class="panel__head">
+          <button id="back-btn" class="back-link">← BACK</button>
+          <p class="label">DRISHTI</p>
+        </header>
+
+        <div class="panel__body">
+          <p class="label" id="panel-mode-label">HYDERABAD · WARD MONITORING</p>
+          <h2 class="title title--panel" id="panel-title">RISK OVERVIEW</h2>
+
+          <div class="metrics">
+            <div class="metric">
+              <span class="metric__num" id="count-safe">0</span>
+              <span class="metric__label">SAFE</span>
+            </div>
+            <div class="metric">
+              <span class="metric__num" id="count-moderate">0</span>
+              <span class="metric__label">MODERATE</span>
+            </div>
+            <div class="metric">
+              <span class="metric__num" id="count-critical">0</span>
+              <span class="metric__label">CRITICAL</span>
+            </div>
+          </div>
+
+          <p class="dataset-line" id="dataset-stats">Loading dataset…</p>
+          <p class="status-line" id="health-badge">Checking status…</p>
+
+          <div class="rule-h" aria-hidden="true"></div>
+
+          <nav class="mode-nav">
+            <button class="mode-nav__btn mode-nav__btn--active" data-tab="wards">01 · WARDS</button>
+            <button class="mode-nav__btn" data-tab="states">02 · STATES</button>
+          </nav>
+
+          <section id="wards-panel" class="panel-section panel-section--active">
+            <ul id="ward-list" class="item-list"></ul>
+          </section>
+
+          <section id="states-panel" class="panel-section">
+            <label class="label" for="state-select">SELECT STATE / UT</label>
+            <select id="state-select" class="select">
+              <option value="">Choose region…</option>
+            </select>
+            <div id="state-summary" class="summary-block hidden"></div>
+          </section>
+
+          <div class="rule-h" aria-hidden="true"></div>
+
+          <section id="detail-panel" class="detail hidden">
+            <span class="module__num" id="detail-index">—</span>
+            <h3 class="module__title" id="detail-name">—</h3>
+            <p class="module__desc" id="detail-id"></p>
+            <p class="risk-status" id="detail-risk">—</p>
+
+            <dl class="spec-list">
+              <div><dt>G-INDEX</dt><dd id="detail-gindex">—</dd></div>
+              <div><dt>WATER LEVEL</dt><dd id="detail-water">—</dd></div>
+              <div><dt>STATION</dt><dd id="detail-station">—</dd></div>
+              <div><dt>STATE</dt><dd id="detail-state">—</dd></div>
+              <div><dt>DISTRICT</dt><dd id="detail-district">—</dd></div>
+              <div><dt>DISTANCE</dt><dd id="detail-distance">—</dd></div>
+              <div><dt>UPDATED</dt><dd id="detail-updated">—</dd></div>
+              <div><dt>SOURCE</dt><dd id="detail-source">—</dd></div>
+            </dl>
+
+            <button id="alert-btn" class="cta cta--block">PLAY TELUGU ALERT →</button>
+
+            <div id="alert-box" class="alert-block hidden">
+              <p class="body-text" id="alert-en"></p>
+              <p class="alert-block__te" id="alert-te"></p>
+              <audio id="alert-audio" controls></audio>
+            </div>
+          </section>
+        </div>
+
+        <footer class="panel__foot">
+          <button id="refresh-all-btn" class="cta">REFRESH DATA →</button>
+          <p class="label label--bottom">HYDERABAD · 2025</p>
+        </footer>
+      </aside>
+
+      <div class="split__rule" aria-hidden="true"></div>
+
+      <section class="split__right map-panel">
+        <div id="map"></div>
+        <div class="map-meta">
+          <span id="map-legend-safe">SAFE</span>
+          <span id="map-legend-moderate">MODERATE</span>
+          <span id="map-legend-critical">CRITICAL</span>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

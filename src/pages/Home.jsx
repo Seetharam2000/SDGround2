@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import heroImg from "../assets/hero.jpg"; // rename your image to hero.jpg and put it in src/assets/
+import heroImg from "../assets/hero.jpg";
 
 export default function Home() {
   return (
@@ -13,8 +13,8 @@ export default function Home() {
             Hyderabad · Civic Intelligence
           </p>
           <h1 className="text-[clamp(2rem,7vw,6rem)] font-black leading-[0.85] tracking-tighter uppercase mb-10">
-  SDGround
-</h1>
+            SDGround
+          </h1>
           <p className="text-gray-400 text-base max-w-sm leading-relaxed mb-12">
             Real-time complaint tracking across Hyderabad's wards.
             Report issues, monitor SDG scores, and hold the city accountable.
@@ -42,7 +42,6 @@ export default function Home() {
             alt="Hyderabad civic issues"
             className="absolute inset-0 w-full h-full object-cover"
           />
-          {/* subtle dark overlay on left edge to blend with text panel */}
           <div className="absolute inset-0 bg-gradient-to-r from-black via-transparent to-transparent" />
         </div>
       </section>
@@ -50,7 +49,7 @@ export default function Home() {
       <div className="border-t border-gray-800 mx-8" />
 
       {/* Feature Grid */}
-      <section className="max-w-6xl mx-auto px-8 py-0 grid grid-cols-1 md:grid-cols-3 gap-px bg-gray-800">
+      <section className="max-w-6xl mx-auto px-8 py-0 grid grid-cols-1 md:grid-cols-4 gap-px bg-gray-800">
         {[
           {
             to: "/map",
@@ -72,6 +71,13 @@ export default function Home() {
             title: "Authority Panel",
             desc: "AI-generated ward reports and live complaint dashboard.",
             cta: "Access",
+          },
+          {
+            to: "/drishti",
+            num: "04",
+            title: "Drishti",
+            desc: "Groundwater risk intelligence across Hyderabad's wards.",
+            cta: "Launch",
           },
         ].map((item) => (
           <Link

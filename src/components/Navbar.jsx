@@ -28,11 +28,12 @@ export default function Navbar() {
     { to: "/home", label: "Home" },
     { to: "/map", label: "Map" },
     { to: "/report", label: "Report Issue" },
+    { to: "/drishti", label: "Drishti" },
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-[2000] bg-gray-900 border-b border-gray-800 px-5 h-14 flex items-center justify-between">
-      <Link to="/home" className="font-black text-white text-lg tracking-tight">
+    <nav className="fixed top-0 left-0 right-0 z-[2000] bg-black border-b border-gray-800 px-8 h-14 flex items-center justify-between">
+      <Link to="/home" className="font-black text-white text-sm tracking-[0.25em] uppercase">
         SDGround
       </Link>
 

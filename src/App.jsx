@@ -19,9 +19,9 @@ export default function App() {
         position="top-right"
         toastOptions={{
           style: {
-            background: "#1f2937",
-            color: "#f9fafb",
-            border: "1px solid #374151",
+            background: "#111111",
+            color: "#ffffff",
+            border: "1px solid #1f1f1f",
           },
         }}
       />
@@ -35,16 +35,22 @@ export default function App() {
         <Route path="/map" element={<Map />} />
         <Route path="/report" element={<ComplaintForm />} />
 
-        {/* Authority Routes */}
+        {/* Drishti */}
         <Route
-          path="/authority-login"
-          element={<AuthorityLogin />}
+          path="/drishti"
+          element={
+            <iframe
+              src="/drishti/index.html"
+              className="w-full border-none"
+              style={{ height: "calc(100vh - 56px)", marginTop: "56px" }}
+              title="Drishti"
+            />
+          }
         />
 
-        <Route
-          path="/authority"
-          element={<AuthorityDashboard />}
-        />
+        {/* Authority Routes */}
+        <Route path="/authority-login" element={<AuthorityLogin />} />
+        <Route path="/authority" element={<AuthorityDashboard />} />
       </Routes>
     </BrowserRouter>
   );
