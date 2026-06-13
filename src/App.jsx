@@ -6,6 +6,7 @@ import Map from "./components/Map";
 import ComplaintForm from "./components/ComplaintForm";
 import AuthorityDashboard from "./components/authorityDashboard";
 import Login from "./pages/Login";
+import Home from "./pages/Home";
 
 export default function App() {
   return (
@@ -22,11 +23,12 @@ export default function App() {
       />
       <Navbar />
       <Routes>
-        <Route path="/" element={<Map />} />
-        <Route path="/report" element={<ComplaintForm />} />
-        <Route path="/dashboard" element={<AuthorityDashboard />} />
-        <Route path="/login" element={<Login />} />
-      </Routes>
+  <Route path="/" element={<Login />} />
+  <Route path="/home" element={<Home />} />
+  <Route path="/map" element={<Map />} />
+  <Route path="/report" element={<ComplaintForm />} />
+  <Route path="/dashboard" element={<AuthorityDashboard />} />
+</Routes>
     </BrowserRouter>
   );
 }

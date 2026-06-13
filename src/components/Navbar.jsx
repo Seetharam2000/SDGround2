@@ -5,13 +5,12 @@ import { signOut } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import toast from "react-hot-toast";
 
-// Install: npm install react-firebase-hooks
-// If not installed yet: npm install react-firebase-hooks
-
 export default function Navbar() {
   const loc = useLocation();
   const navigate = useNavigate();
   const [user] = useAuthState(auth);
+
+  if (!user) return null;
 
   const handleLogout = async () => {
     await signOut(auth);
@@ -20,14 +19,15 @@ export default function Navbar() {
   };
 
   const links = [
-    { to: "/", label: "Map" },
+    { to: "/home", label: "Home" },
+    { to: "/map", label: "Map" },
     { to: "/report", label: "Report Issue" },
     { to: "/dashboard", label: "Authority" },
   ];
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-[2000] bg-gray-900 border-b border-gray-800 px-5 h-14 flex items-center justify-between">
-      <Link to="/" className="font-black text-white text-lg tracking-tight">
+      <Link to="/home" className="font-black text-white text-lg tracking-tight">
         SDGround
       </Link>
 
@@ -46,25 +46,12 @@ export default function Navbar() {
           </Link>
         ))}
 
-        {user ? (
-          <button
-            onClick={handleLogout}
-            className="ml-2 text-sm font-medium px-3 py-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-colors"
-          >
-            Logout
-          </button>
-        ) : (
-          <Link
-            to="/login"
-            className={`ml-2 text-sm font-medium px-3 py-1.5 rounded-lg transition-colors ${
-              loc.pathname === "/login"
-                ? "bg-indigo-600 text-white"
-                : "text-gray-400 hover:text-white hover:bg-gray-800"
-            }`}
-          >
-            Login
-          </Link>
-        )}
+        <button
+          onClick={handleLogout}
+          className="ml-2 text-sm font-medium px-3 py-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-colors"
+        >
+          Logout
+        </button>
       </div>
     </nav>
   );
