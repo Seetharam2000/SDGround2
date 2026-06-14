@@ -14,6 +14,7 @@ import { WARDS, PRIORITY_COLOR } from "../data/wards";
 import { getScoreLabel } from "../utils/scoring";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import PredictiveScore from "./PredictiveScore";
 
 export default function AuthorityDashboard() {
   const [user, loadingAuth] = useAuthState(auth);
@@ -41,7 +42,11 @@ export default function AuthorityDashboard() {
       where("status", "==", "open")
     );
     const unsub = onSnapshot(q, (snap) => {
-      setComplaints(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+      setComplaints(
+        snap.docs
+          .map((d) => ({ id: d.id, ...d.data() }))
+          .sort((a, b) => (b.upvotes || 0) - (a.upvotes || 0))
+      );
       setLoadingComplaints(false);
     });
     return () => unsub();
@@ -200,11 +205,21 @@ export default function AuthorityDashboard() {
               )}
             </div>
 
+            {/* Predictive Score */}
+            <div className="px-10 py-8 border-b border-gray-800">
+              <PredictiveScore ward={selected} />
+            </div>
+
             {/* Live complaints */}
             <div className="px-10 py-8">
-              <p className="text-xs tracking-[0.3em] uppercase text-gray-500 mb-6">
-                Live Open Complaints ({complaints.length})
-              </p>
+              <div className="flex items-center justify-between mb-6">
+                <p className="text-xs tracking-[0.3em] uppercase text-gray-500">
+                  Live Open Complaints ({complaints.length})
+                </p>
+                <p className="text-xs tracking-widest uppercase text-gray-600">
+                  Sorted by upvotes
+                </p>
+              </div>
 
               {loadingComplaints ? (
                 <p className="text-xs tracking-widest uppercase text-gray-600">
@@ -222,13 +237,29 @@ export default function AuthorityDashboard() {
                   {complaints.map((c) => (
                     <div
                       key={c.id}
-                      className="bg-black px-6 py-5 flex items-start justify-between"
+                      className="bg-black px-6 py-5 flex items-start gap-4"
                     >
-                      <div className="flex-1 mr-6">
-                        <span className="text-xs border border-gray-700 px-2 py-0.5 capitalize font-bold tracking-widest uppercase text-gray-400">
-                          {c.category}
+                      {/* Upvote count */}
+                      <div className="flex flex-col items-center gap-1 px-3 py-2 border border-gray-800 min-w-[48px]">
+                        <span className="text-xs text-gray-600">△</span>
+                        <span className="text-sm font-black text-white">
+                          {c.upvotes || 0}
                         </span>
-                        <p className="text-sm text-gray-300 mt-3 leading-relaxed">
+                      </div>
+
+                      {/* Content */}
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                          <span className="text-xs border border-gray-700 px-2 py-0.5 capitalize font-bold tracking-widest uppercase text-gray-400">
+                            {c.category}
+                          </span>
+                          {c.upvotes > 0 && (
+                            <span className="text-xs text-gray-600 tracking-widest uppercase">
+                              {c.upvotes} community {c.upvotes === 1 ? "vote" : "votes"}
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-sm text-gray-300 leading-relaxed">
                           {c.description}
                         </p>
                         {c.imageUrl && (
@@ -239,6 +270,8 @@ export default function AuthorityDashboard() {
                           />
                         )}
                       </div>
+
+                      {/* Resolve */}
                       <button
                         onClick={() => resolveComplaint(c.id)}
                         className="text-xs border border-gray-700 hover:border-white hover:text-white text-gray-400 px-4 py-2 font-bold tracking-[0.15em] uppercase transition-colors flex-shrink-0"

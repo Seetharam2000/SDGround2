@@ -49,7 +49,7 @@ export default function Home() {
       <div className="border-t border-gray-800 mx-8" />
 
       {/* Feature Grid */}
-      <section className="max-w-6xl mx-auto px-8 py-0 grid grid-cols-1 md:grid-cols-4 gap-px bg-gray-800">
+      <section className="max-w-6xl mx-auto px-8 py-0 grid grid-cols-1 md:grid-cols-5 gap-px bg-gray-800">
         {[
           {
             to: "/map",
@@ -66,15 +66,22 @@ export default function Home() {
             cta: "Submit",
           },
           {
-            to: "/dashboard",
+            to: "/feed",
             num: "03",
+            title: "Community",
+            desc: "Upvote complaints affecting your ward. Most urgent rise to top.",
+            cta: "Vote",
+          },
+          {
+            to: "/dashboard",
+            num: "04",
             title: "Authority Panel",
             desc: "AI-generated ward reports and live complaint dashboard.",
             cta: "Access",
           },
           {
             to: "/drishti",
-            num: "04",
+            num: "05",
             title: "Drishti",
             desc: "Groundwater risk intelligence across Hyderabad's wards.",
             cta: "Launch",
@@ -83,12 +90,12 @@ export default function Home() {
           <Link
             key={item.to}
             to={item.to}
-            className="bg-black p-10 group hover:bg-gray-950 transition-colors"
+            className="bg-black p-8 group hover:bg-gray-950 transition-colors"
           >
             <p className="text-xs tracking-[0.25em] text-gray-600 uppercase mb-6">
               {item.num}
             </p>
-            <h2 className="text-2xl font-black uppercase tracking-tight mb-3 group-hover:text-gray-300 transition-colors">
+            <h2 className="text-xl font-black uppercase tracking-tight mb-3 group-hover:text-gray-300 transition-colors">
               {item.title}
             </h2>
             <p className="text-gray-500 text-sm leading-relaxed">
@@ -104,11 +111,12 @@ export default function Home() {
       <div className="border-t border-gray-800 mx-8" />
 
       {/* Stats */}
-      <section className="max-w-6xl mx-auto px-8 py-12 grid grid-cols-3 gap-8 text-center">
+      <section className="max-w-6xl mx-auto px-8 py-12 grid grid-cols-4 gap-8 text-center">
         {[
           { value: "150+", label: "Wards Monitored" },
           { value: "5",    label: "SDG Categories" },
           { value: "Live", label: "Real-time Updates" },
+          { value: "30d",  label: "AI SDG Forecast" },
         ].map((s) => (
           <div key={s.label}>
             <p className="text-3xl font-black tracking-tight">{s.value}</p>

@@ -28,6 +28,7 @@ export default function Navbar() {
     { to: "/home", label: "Home" },
     { to: "/map", label: "Map" },
     { to: "/report", label: "Report Issue" },
+    { to: "/feed", label: "Community" },
     { to: "/drishti", label: "Drishti" },
   ];
 

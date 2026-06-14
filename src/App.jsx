@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar";
 import Map from "./components/Map";
 import ComplaintForm from "./components/ComplaintForm";
 import AuthorityDashboard from "./components/authorityDashboard";
+import Feed from "./pages/Feed";
 
 import Login from "./pages/Login";
 import Home from "./pages/Home";
@@ -34,6 +35,7 @@ export default function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/map" element={<Map />} />
         <Route path="/report" element={<ComplaintForm />} />
+        <Route path="/feed" element={<Feed />} />
 
         {/* Drishti */}
         <Route
