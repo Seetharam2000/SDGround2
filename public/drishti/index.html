@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="/static/css/style.css" />
 </head>
 <body>
 
@@ -70,15 +70,15 @@
           <h2 class="title title--panel" id="panel-title">RISK OVERVIEW</h2>
 
           <div class="metrics">
-            <div class="metric">
+            <div class="metric metric--safe">
               <span class="metric__num" id="count-safe">0</span>
               <span class="metric__label">SAFE</span>
             </div>
-            <div class="metric">
+            <div class="metric metric--moderate">
               <span class="metric__num" id="count-moderate">0</span>
               <span class="metric__label">MODERATE</span>
             </div>
-            <div class="metric">
+            <div class="metric metric--critical">
               <span class="metric__num" id="count-critical">0</span>
               <span class="metric__label">CRITICAL</span>
             </div>
@@ -146,15 +146,15 @@
       <section class="split__right map-panel">
         <div id="map"></div>
         <div class="map-meta">
-          <span id="map-legend-safe">SAFE</span>
-          <span id="map-legend-moderate">MODERATE</span>
-          <span id="map-legend-critical">CRITICAL</span>
+          <span class="legend legend--safe" id="map-legend-safe">SAFE</span>
+          <span class="legend legend--moderate" id="map-legend-moderate">MODERATE</span>
+          <span class="legend legend--critical" id="map-legend-critical">CRITICAL</span>
         </div>
       </section>
     </div>
   </div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="js/app.js"></script>
+  <script src="/static/js/app.js"></script>
 </body>
 </html>

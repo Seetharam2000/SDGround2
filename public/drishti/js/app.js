@@ -163,7 +163,7 @@ function renderWardList() {
         <div class="item__name">${ward.name}</div>
         <div class="item__meta">${ward.ward_id} · ${ward.state || "Telangana"}</div>
       </div>
-      <span class="item__risk item__risk--${level}">${level}</span>
+      <span class="item__risk item__risk--${level}">${level.toUpperCase()}</span>
     `;
     li.addEventListener("click", () => selectWard(ward.ward_id));
     els.wardList.appendChild(li);
@@ -199,7 +199,8 @@ function fillRiskDetails(ward, risk, index) {
   els.detailIndex.textContent = String(index + 1).padStart(2, "0");
   els.detailName.textContent = ward.name.toUpperCase();
   els.detailId.textContent = `${ward.ward_id} · ${ward.state || "Telangana"}`;
-  els.detailRisk.textContent = level;
+  els.detailRisk.textContent = level.toUpperCase();
+  els.detailRisk.className = `risk-status risk-status--${level}`;
   els.detailGindex.textContent = risk.g_index;
   els.detailWater.textContent = `${risk.H_current} M`;
   els.detailStation.textContent = risk.station_name || "—";
@@ -231,6 +232,7 @@ function selectWard(wardId) {
     els.detailName.textContent = ward.name.toUpperCase();
     els.detailId.textContent = ward.ward_id;
     els.detailRisk.textContent = "LOADING";
+    els.detailRisk.className = "risk-status";
   }
 
   if (map) {
@@ -254,7 +256,7 @@ async function fetchStates() {
   for (const state of states) {
     const option = document.createElement("option");
     option.value = state.state_name;
-    option.textContent = `${state.state_name.toUpperCase()} · ${state.station_count} STATIONS`;
+    option.textContent = `${state.state_name.toUpperCase()} · ${state.safe_count}S ${state.moderate_count}M ${state.critical_count}C`;
     els.stateSelect.appendChild(option);
   }
 }
@@ -321,8 +323,11 @@ async function showStateSummary(stateName) {
 
   els.stateSummary.classList.remove("hidden");
   els.stateSummary.innerHTML = `
-    <strong>${data.state_name}</strong><br>
+    <strong>${data.state_name.toUpperCase()}</strong><br>
     ${data.station_count} monitoring stations<br>
+    <span class="risk-safe">${data.safe_count} SAFE</span> ·
+    <span class="risk-moderate">${data.moderate_count} MODERATE</span> ·
+    <span class="risk-critical">${data.critical_count} CRITICAL</span><br>
     Average depth · <strong>${data.avg_water_level_m} M</strong><br>
     Range · ${data.min_water_level_m} M – ${data.max_water_level_m} M
   `;
@@ -330,12 +335,19 @@ async function showStateSummary(stateName) {
   if (!map) return;
 
   if (stateCircle) map.removeLayer(stateCircle);
+  const dominant =
+    data.critical_count >= data.moderate_count &&
+    data.critical_count >= data.safe_count
+      ? "#ef4444"
+      : data.moderate_count >= data.safe_count
+        ? "#eab308"
+        : "#22c55e";
   stateCircle = L.circle([data.center_lat, data.center_lng], {
-    color: "#1a3a1a",
-    fillColor: "#8fbc6a",
-    fillOpacity: 0.18,
+    color: dominant,
+    fillColor: dominant,
+    fillOpacity: 0.12,
     weight: 1,
-    opacity: 0.45,
+    opacity: 0.5,
     radius: 65000,
     className: "state-ring",
   }).addTo(map);
@@ -383,9 +395,13 @@ async function playAlert() {
 
     if (data.audio_base64) {
       els.alertAudio.src = `data:audio/wav;base64,${data.audio_base64}`;
+      els.alertAudio.load();
       els.alertAudio.play().catch(() => {});
     } else {
       els.alertAudio.removeAttribute("src");
+      if (data.sarvam_error) {
+        els.alertTe.textContent += `\n\n(Sarvam error: ${data.sarvam_error})`;
+      }
     }
   } catch (err) {
     els.alertBox.classList.remove("hidden");

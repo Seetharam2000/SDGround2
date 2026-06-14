@@ -4,6 +4,9 @@
   --muted: #8a8a8a;
   --border: rgba(255, 255, 255, 0.14);
   --font: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --safe: #22c55e;
+  --moderate: #eab308;
+  --critical: #ef4444;
 }
 
 *,
@@ -17,7 +20,7 @@
 html,
 body {
   height: 100%;
-  overflow: hidden;
+  overflow: auto;
 }
 
 body {
@@ -30,8 +33,8 @@ body {
 /* Screens */
 .screen {
   display: none;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
 }
 
 .screen--active {
@@ -42,8 +45,8 @@ body {
 .split {
   display: grid;
   grid-template-columns: 1fr 1px 1fr;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
 }
 
 .split__left,
@@ -270,6 +273,10 @@ body {
   text-transform: uppercase;
 }
 
+.metric--safe .metric__num { color: var(--safe); }
+.metric--moderate .metric__num { color: var(--moderate); }
+.metric--critical .metric__num { color: var(--critical); }
+
 .dataset-line,
 .status-line {
   font-size: 0.72rem;
@@ -395,21 +402,30 @@ body {
   padding-top: 0.2rem;
 }
 
-.item__risk--safe { color: var(--text); }
-.item__risk--moderate { color: var(--muted); }
-.item__risk--critical { color: var(--text); text-decoration: underline; }
+.item__risk--safe { color: var(--safe); }
+.item__risk--moderate { color: var(--moderate); }
+.item__risk--critical { color: var(--critical); }
+
+.risk-status--safe { color: var(--safe); }
+.risk-status--moderate { color: var(--moderate); }
+.risk-status--critical { color: var(--critical); }
 
 /* Detail */
 .detail {
   margin-top: 1.5rem;
 }
 
+.legend--safe { color: var(--safe); }
+.legend--moderate { color: var(--moderate); }
+.legend--critical { color: var(--critical); }
+
+.summary-block .risk-safe { color: var(--safe); }
+.summary-block .risk-moderate { color: var(--moderate); }
 .risk-status {
   font-size: 0.75rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   margin: 0.75rem 0 1.25rem;
-  color: var(--text);
 }
 
 .spec-list {
@@ -567,27 +583,25 @@ body {
 }
 
 .marker-dot {
-  width: 8px;
-  height: 8px;
-  background: #1a3a1a;
-  border: 1px solid #0d200d;
+  width: 9px;
+  height: 9px;
+  border-radius: 1px;
+  background: var(--safe);
+  border: none;
 }
 
 .marker-dot--moderate {
-  background: transparent;
-  border: 2px solid #1a3a1a;
+  background: var(--moderate);
 }
 
 .marker-dot--critical {
   width: 10px;
   height: 10px;
-  background: #0d200d;
-  border: 2px solid #0d200d;
+  background: var(--critical);
 }
 
 .marker-dot--unknown {
-  background: #6b8f6b;
-  border: none;
+  background: var(--muted);
 }
 
 /* State circle */
