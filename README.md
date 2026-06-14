@@ -12,4 +12,4 @@ SDGround connects citizens, communities, and municipal authorities. Citizens rep
 
 **Drishti** (integrated add-on): Groundwater risk intelligence across 4,320+ stations in 36 Indian states, with Telugu audio alerts via Sarvam AI.
 
-Built at SRM Institute of Science and Technology · Hyderabad · 2025
+
