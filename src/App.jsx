@@ -39,12 +39,24 @@ export default function App() {
         <Route
           path="/drishti"
           element={
-            <iframe
-              src="/drishti/index.html"
-              className="w-full border-none"
-              style={{ height: "calc(100vh - 56px)", marginTop: "56px" }}
-              title="Drishti"
-            />
+            <div style={{
+              position: "fixed",
+              top: "56px",
+              left: 0,
+              right: 0,
+              bottom: 0,
+            }}>
+              <iframe
+                src="/drishti/index.html"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  border: "none",
+                  display: "block",
+                }}
+                title="Drishti"
+              />
+            </div>
           }
         />
 
