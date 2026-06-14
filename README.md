@@ -1,16 +1,15 @@
-# React + Vite
+# SDGround — Civic Intelligence Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Real-time complaint tracking, SDG scoring, and groundwater intelligence for Hyderabad's wards.
 
-Currently, two official plugins are available:
+**Live:** [sd-ground2.vercel.app](https://sd-ground2.vercel.app)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+SDGround connects citizens, communities, and municipal authorities. Citizens report local issues, the community validates them through upvotes, and authorities act on AI-prioritized data — all tracked against UN Sustainable Development Goals.
 
-## React Compiler
+**Core loop:** Citizen reports → Community upvotes → Authority acts → SDG score improves
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+**Built with:** React, Firebase, Claude AI, Leaflet, FastAPI, Sarvam AI
 
-## Expanding the ESLint configuration
+**Drishti** (integrated add-on): Groundwater risk intelligence across 4,320+ stations in 36 Indian states, with Telugu audio alerts via Sarvam AI.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Built at SRM Institute of Science and Technology · Hyderabad · 2025
